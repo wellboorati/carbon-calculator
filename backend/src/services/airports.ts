@@ -25,12 +25,23 @@ function parseCSVLine(line: string): string[] {
 }
 
 export function loadAirports(): void {
+  if (airportMap.size > 0) return; // already loaded
+
   airportMap = new Map();
   airportList = [];
 
   const dataPath = path.join(__dirname, '../data/airports.dat');
-  const content = fs.readFileSync(dataPath, 'utf-8');
 
+  let content: string;
+  try {
+    content = fs.readFileSync(dataPath, 'utf-8');
+  } catch (err) {
+    throw new Error(`Failed to load airports data from ${dataPath}: ${(err as Error).message}`);
+  }
+
+  // OpenFlights airports.dat columns (0-indexed, CSV with quoted fields):
+  // 0: Airport ID, 1: Name, 2: City, 3: Country,
+  // 4: IATA code, 5: ICAO code, 6: Latitude, 7: Longitude
   for (const line of content.split('\n')) {
     if (!line.trim()) continue;
 

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import calculateRouter from './routes/calculate';
 import airportsRouter from './routes/airports';
+import pdfRouter from './routes/pdf';
 
 export function createApp() {
   const app = express();
@@ -10,6 +11,7 @@ export function createApp() {
 
   app.use('/calculate', calculateRouter);
   app.use('/airports', airportsRouter);
+  app.use('/generate-pdf', pdfRouter);
 
   return app;
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CalculateRequest, CalculateResponse, Airport } from '../types';
+import type { CalculateRequest, CalculateResponse, Airport } from '../types';
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
@@ -20,6 +20,8 @@ export async function downloadPDF(result: CalculateResponse): Promise<void> {
   const link = document.createElement('a');
   link.href = url;
   link.download = 'carbon-footprint.pdf';
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }

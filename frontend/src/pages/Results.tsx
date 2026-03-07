@@ -9,7 +9,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import EmissionsBreakdown from '../components/results/EmissionsBreakdown';
 import { downloadPDF } from '../services/api';
-import { CalculateResponse } from '../types';
+import type { CalculateResponse } from '../types';
 
 export default function Results() {
   const location = useLocation();

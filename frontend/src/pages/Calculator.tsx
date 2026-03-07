@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 import HousingStep from '../components/calculator/steps/HousingStep';
 import TransportationStep from '../components/calculator/steps/TransportationStep';
 import FlightsStep from '../components/calculator/steps/FlightsStep';
-import { HousingInput, TransportationInput, FlightInput } from '../types';
+import type { HousingInput, TransportationInput, FlightInput } from '../types';
 import { calculate } from '../services/api';
 
 const STEPS = ['Housing / Home Energy', 'Transportation', 'Flights'];
@@ -32,8 +32,9 @@ export default function Calculator() {
   const [transportation, setTransportation] = useState<TransportationInput[] | null>(null);
   const [transportDraft, setTransportDraft] = useState<TransportationInput[]>([]);
 
-  const [flights, setFlights] = useState<FlightInput[] | null>(null);
   const [flightsDraft, setFlightsDraft] = useState<FlightInput[]>([]);
+
+  const isLastStep = activeStep === STEPS.length - 1;
 
   function handleNext() {
     if (activeStep === 0) setHousing(housingDraft.consumption > 0 ? housingDraft : null);
@@ -43,17 +44,31 @@ export default function Calculator() {
     }
   }
 
-  function handleSkip() {
+  async function handleSkip() {
     if (activeStep === 0) setHousing(null);
     if (activeStep === 1) setTransportation(null);
-    if (activeStep < STEPS.length - 1) {
-      setActiveStep((s) => s + 1);
+    if (isLastStep) {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await calculate({
+          housing,
+          transportation,
+          flights: null,
+        });
+        navigate('/results', { state: { result } });
+      } catch {
+        setError('Failed to calculate. Make sure the backend is running on port 3001.');
+      } finally {
+        setLoading(false);
+      }
+      return;
     }
+    setActiveStep((s) => s + 1);
   }
 
   async function handleSubmit() {
     const finalFlights = flightsDraft.length > 0 ? flightsDraft : null;
-    setFlights(finalFlights);
     setLoading(true);
     setError(null);
     try {
@@ -69,8 +84,6 @@ export default function Calculator() {
       setLoading(false);
     }
   }
-
-  const isLastStep = activeStep === STEPS.length - 1;
 
   return (
     <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>

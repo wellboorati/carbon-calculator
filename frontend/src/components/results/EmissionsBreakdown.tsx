@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PieChart } from '@mui/x-charts/PieChart';
-import { CalculateResponse } from '../../types';
+import type { CalculateResponse } from '../../types';
 
 const COLORS: Record<string, string> = {
   housing: '#2e7d32',

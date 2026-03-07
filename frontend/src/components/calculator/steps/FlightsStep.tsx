@@ -16,7 +16,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { FlightInput, AirportFlightInput, ManualFlightInput, Airport } from '../../../types';
+import type { FlightInput, AirportFlightInput, ManualFlightInput, Airport } from '../../../types';
 import { searchAirports } from '../../../services/api';
 
 interface Props {

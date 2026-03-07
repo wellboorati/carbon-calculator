@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { TransportationInput, VehicleInput, PublicTransportInput } from '../../../types';
+import type { TransportationInput, VehicleInput, PublicTransportInput } from '../../../types';
 
 interface Props {
   value: TransportationInput[];

@@ -1,31 +1,31 @@
 # Carbon Calculator
 
-Calculadora de pegada de carbono que estima emissões anuais de CO₂ com base em energia doméstica, transporte, voos e alimentação. Gera um relatório em PDF comparando o resultado com médias nacionais e mundiais.
+A carbon footprint calculator that estimates annual CO₂ emissions based on home energy, transportation, flights, and diet. Generates a PDF report comparing the result with national and world averages.
 
-## Arquitetura
+## Architecture
 
 ```
 carbon-calculator/
 ├── backend/    # Node.js + Express + GraphQL (Apollo Server)
 ├── frontend/   # React + Vite + Material UI
-├── e2e/        # Testes end-to-end com Playwright
+├── e2e/        # End-to-end tests with Playwright
 └── docker-compose.yml
 ```
 
-O frontend se comunica com o backend exclusivamente via GraphQL. Não há banco de dados — todo o cálculo é stateless.
+The frontend communicates with the backend exclusively via GraphQL. There is no database — all calculations are stateless.
 
 ---
 
-## Pré-requisitos
+## Prerequisites
 
 - Node.js 18+
 - npm
 
 ---
 
-## Modo desenvolvimento
+## Development mode
 
-Execute cada serviço em um terminal separado:
+Run each service in a separate terminal:
 
 ```bash
 # Backend → http://localhost:3002
@@ -39,7 +39,7 @@ npm install
 npm run dev
 ```
 
-As variáveis de ambiente padrão já estão configuradas para desenvolvimento local. Se necessário, crie os arquivos `.env`:
+Default environment variables are already configured for local development. If needed, create `.env` files:
 
 ```bash
 # backend/.env
@@ -52,22 +52,22 @@ VITE_API_URL=http://localhost:3002
 
 ---
 
-## Modo Docker
+## Docker mode
 
 ```bash
 docker compose up --build
 ```
 
-| Serviço  | URL                    |
+| Service  | URL                    |
 |----------|------------------------|
 | Frontend | http://localhost:8080  |
 | Backend  | http://localhost:3003  |
 
-No Docker, o nginx do frontend faz proxy das chamadas `/graphql` para o container do backend internamente — o backend não precisa ser acessado diretamente pelo browser.
+In Docker, the frontend's nginx proxies `/graphql` requests to the backend container internally — the backend does not need to be accessed directly by the browser.
 
 ---
 
-## Testes unitários
+## Unit tests
 
 ### Backend (Jest)
 
@@ -76,7 +76,7 @@ cd backend
 npm test
 ```
 
-Cobre os serviços de cálculo: housing, transportation, flights e diet.
+Covers the calculation services: housing, transportation, flights, and diet.
 
 ### Frontend (Vitest)
 
@@ -87,9 +87,9 @@ npm test
 
 ---
 
-## Testes end-to-end (Playwright)
+## End-to-end tests (Playwright)
 
-Os testes E2E sobem o backend e o frontend automaticamente antes de executar.
+E2E tests automatically start the backend and frontend before running.
 
 ```bash
 cd e2e
@@ -98,7 +98,7 @@ npx playwright install chromium
 npx playwright test
 ```
 
-Para ver o relatório após a execução:
+To view the report after the run:
 
 ```bash
 npx playwright show-report
@@ -106,13 +106,13 @@ npx playwright show-report
 
 ---
 
-## Categorias de cálculo
+## Calculation categories
 
-| Categoria      | Entradas                                               |
-|----------------|--------------------------------------------------------|
-| Energia doméstica | Eletricidade, gás natural, óleo de aquecimento, propano |
-| Transporte     | Veículo próprio (gasolina/diesel) e transporte público |
-| Voos           | Busca por aeroporto ou distância manual, classe da cabine |
-| Alimentação    | Consumo semanal de carne bovina, outras carnes, peixe e laticínios |
+| Category       | Inputs                                                        |
+|----------------|---------------------------------------------------------------|
+| Home energy    | Electricity, natural gas, heating oil, propane                |
+| Transportation | Personal vehicle (gasoline/diesel) and public transport       |
+| Flights        | Search by airport or manual distance, cabin class             |
+| Diet           | Weekly servings of beef, other meat, fish, and dairy          |
 
-O resultado é expresso em toneladas de CO₂ por ano e comparado com médias por país e a média mundial.
+Results are expressed in tonnes of CO₂ per year and compared against country-level and world averages.

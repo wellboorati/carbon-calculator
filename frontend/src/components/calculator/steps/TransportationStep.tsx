@@ -44,7 +44,12 @@ export default function TransportationStep({ value, onChange }: Props) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Typography variant="h6">Transportation</Typography>
+      <Box>
+        <Typography variant="h6">Transportation</Typography>
+        <Typography variant="body2" color="text.secondary" mt={0.5}>
+          Add each vehicle or regular route you use. Include your daily commute and any recurring trips.
+        </Typography>
+      </Box>
 
       {value.map((item, i) => (
         <Card key={i} variant="outlined">
@@ -81,7 +86,7 @@ export default function TransportationStep({ value, onChange }: Props) {
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField fullWidth label="Distance" type="number" value={item.distance || ''}
                     onChange={(e) => update(i, { ...item, distance: parseFloat(e.target.value) || 0 })}
-                    inputProps={{ min: 0 }} />
+                    slotProps={{ htmlInput: { min: 0 } }} />
                   <FormControl sx={{ minWidth: 100 }}>
                     <InputLabel>Unit</InputLabel>
                     <Select value={item.distanceUnit} label="Unit"
@@ -103,7 +108,8 @@ export default function TransportationStep({ value, onChange }: Props) {
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField fullWidth label="Fuel Efficiency" type="number" value={item.efficiency || ''}
                     onChange={(e) => update(i, { ...item, efficiency: parseFloat(e.target.value) || 0 })}
-                    inputProps={{ min: 0 }} />
+                    slotProps={{ htmlInput: { min: 0 } }}
+                    helperText="Check your car manual or fuel cap sticker" />
                   <FormControl sx={{ minWidth: 150 }}>
                     <InputLabel>Efficiency Unit</InputLabel>
                     <Select value={item.efficiencyUnit} label="Efficiency Unit"
@@ -131,7 +137,7 @@ export default function TransportationStep({ value, onChange }: Props) {
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField fullWidth label="Distance" type="number" value={item.distance || ''}
                     onChange={(e) => update(i, { ...item, distance: parseFloat(e.target.value) || 0 })}
-                    inputProps={{ min: 0 }} />
+                    slotProps={{ htmlInput: { min: 0 } }} />
                   <FormControl sx={{ minWidth: 100 }}>
                     <InputLabel>Unit</InputLabel>
                     <Select value={item.distanceUnit} label="Unit"

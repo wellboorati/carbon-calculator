@@ -17,7 +17,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import type { FlightInput, AirportFlightInput, ManualFlightInput, Airport } from '../../../types';
-import { searchAirports } from '../../../services/api';
+import { searchAirports } from '../../../services/graphqlApi';
 
 interface Props {
   value: FlightInput[];
@@ -35,26 +35,36 @@ const DEFAULT_MANUAL_FLIGHT: ManualFlightInput = {
 };
 
 function AirportSelect({ label, onChange }: { label: string; value: string; onChange: (iata: string) => void }) {
+  const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<Airport[]>([]);
   const [loading, setLoading] = useState(false);
 
   async function handleSearch(query: string) {
     if (query.length < 2) { setOptions([]); return; }
     setLoading(true);
-    const results = await searchAirports(query);
-    setOptions(results);
-    setLoading(false);
+    try {
+      const results = await searchAirports(query);
+      setOptions(results);
+    } catch {
+      setOptions([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <Autocomplete
       fullWidth
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
       options={options}
       getOptionLabel={(o) => `${o.iata} — ${o.name} (${o.country})`}
       filterOptions={(x) => x}
-      onInputChange={(_, v) => handleSearch(v)}
+      onInputChange={(_, v, reason) => { if (reason === 'input') handleSearch(v); }}
       onChange={(_, o) => onChange(o ? o.iata : '')}
       loading={loading}
+      noOptionsText="Type at least 2 characters to search"
       renderInput={(params) => (
         <TextField {...params} label={label}
           InputProps={{ ...params.InputProps, endAdornment: (<>{loading ? <CircularProgress size={16} /> : null}{params.InputProps.endAdornment}</>) }}
@@ -85,7 +95,12 @@ export default function FlightsStep({ value, onChange }: Props) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Typography variant="h6">Flights</Typography>
+      <Box>
+        <Typography variant="h6">Flights</Typography>
+        <Typography variant="body2" color="text.secondary" mt={0.5}>
+          Add each flight you took in the past year. Search by airport or enter the distance manually.
+        </Typography>
+      </Box>
 
       {value.map((item, i) => (
         <Card key={i} variant="outlined">
@@ -122,7 +137,8 @@ export default function FlightsStep({ value, onChange }: Props) {
                 <TextField fullWidth label="Distance" type="number"
                   value={(item as ManualFlightInput).distance || ''}
                   onChange={(e) => update(i, { ...item, distance: parseFloat(e.target.value) || 0 } as ManualFlightInput)}
-                  inputProps={{ min: 0 }} />
+                  slotProps={{ htmlInput: { min: 0 } }}
+                  helperText="e.g. London–NY ≈ 5,500 km; Paris–Rome ≈ 1,100 km" />
                 <FormControl sx={{ minWidth: 100 }}>
                   <InputLabel>Unit</InputLabel>
                   <Select value={(item as ManualFlightInput).distanceUnit} label="Unit"

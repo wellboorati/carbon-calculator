@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { searchAirports } from '../services/airports';
 
 export function handleAirportSearch(req: Request, res: Response): void {

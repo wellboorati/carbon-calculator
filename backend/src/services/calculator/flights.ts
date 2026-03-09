@@ -1,7 +1,7 @@
-import { FlightInput, Airport } from '../../types';
+import type { FlightInput, Airport } from '../../types';
+import { KM_PER_MILE } from '../../constants/units';
 
 const EARTH_RADIUS_KM = 6371;
-const KM_PER_MILE = 1.60934;
 
 // ICAO Carbon Emissions Calculator methodology (includes radiative forcing factor 2x)
 const BASE_FACTOR_KG_PER_KM = 0.255;

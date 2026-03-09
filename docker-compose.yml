@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      PORT: "3001"
+    ports:
+      - "3003:3001"
+    networks:
+      - app
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # In Docker, the browser talks to nginx which proxies /graphql → backend.
+        # So VITE_API_URL points to the frontend's own origin (empty = same origin).
+        VITE_API_URL: ""
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge

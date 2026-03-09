@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { generatePDF } from '../services/pdf';
-import { CalculateResponse } from '../types';
+import type { CalculateResponse } from '../types';
 
 export async function handleGeneratePDF(req: Request, res: Response): Promise<void> {
   const body = req.body as CalculateResponse;
@@ -10,7 +10,7 @@ export async function handleGeneratePDF(req: Request, res: Response): Promise<vo
     return;
   }
 
-  const pdfBuffer = await generatePDF(body);
+  const pdfBuffer = await generatePDF({ total: body.total, breakdown: body.breakdown, unit: body.unit });
 
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', 'attachment; filename="carbon-footprint.pdf"');

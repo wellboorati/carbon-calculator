@@ -1,13 +1,14 @@
-import { CalculateRequest, CalculateResponse } from '../../types';
+import type { CalculateRequest, CalculateResponse } from '../../types';
 import { calculateHousing } from './housing';
 import { calculateTransportation } from './transportation';
 import { calculateFlights } from './flights';
+import { calculateDiet } from './diet';
 import { getAirportMap } from '../airports';
 
 export function calculate(req: CalculateRequest): CalculateResponse {
   const breakdown: CalculateResponse['breakdown'] = {};
 
-  if (req.housing) {
+  if (req.housing && req.housing.length > 0) {
     breakdown.housing = calculateHousing(req.housing);
   }
 
@@ -17,6 +18,10 @@ export function calculate(req: CalculateRequest): CalculateResponse {
 
   if (req.flights && req.flights.length > 0) {
     breakdown.flights = calculateFlights(req.flights, getAirportMap());
+  }
+
+  if (req.diet) {
+    breakdown.diet = calculateDiet(req.diet);
   }
 
   const total = Object.values(breakdown).reduce((sum, v) => sum + (v ?? 0), 0);

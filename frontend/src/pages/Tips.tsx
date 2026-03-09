@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import FlightIcon from '@mui/icons-material/Flight';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 const TIPS = [
   {
@@ -40,6 +41,18 @@ const TIPS = [
       'Offset your flight emissions through certified carbon offset programs.',
       'Replace short domestic flights with train or bus when feasible.',
       'Bundle multiple trips into fewer, longer journeys.',
+    ],
+  },
+  {
+    icon: <RestaurantIcon fontSize="large" color="primary" />,
+    category: 'Diet',
+    items: [
+      'Reduce beef and lamb consumption — they generate up to 20× more emissions than plant proteins.',
+      'Try one or two plant-based days per week to meaningfully cut your dietary footprint.',
+      'Swap beef for chicken or fish when eating meat — their emissions are 4–5× lower per serving.',
+      'Choose locally sourced and seasonal produce to reduce transport and cold-storage emissions.',
+      'Swap dairy milk for oat or soy milk — plant-based alternatives emit up to 70% less CO₂.',
+      'Reduce food waste: roughly a third of all food produced globally is wasted, with a large carbon cost.',
     ],
   },
 ];

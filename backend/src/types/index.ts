@@ -45,10 +45,18 @@ export interface ManualFlightInput {
 
 export type FlightInput = AirportFlightInput | ManualFlightInput;
 
+export interface DietInput {
+  beefServingsPerWeek: number;
+  otherMeatServingsPerWeek: number;
+  fishServingsPerWeek: number;
+  dairyServingsPerWeek: number;
+}
+
 export interface CalculateRequest {
-  housing: HousingInput | null;
+  housing: HousingInput[] | null;
   transportation: TransportationInput[] | null;
   flights: FlightInput[] | null;
+  diet: DietInput | null;
 }
 
 export interface CalculateResponse {
@@ -57,6 +65,7 @@ export interface CalculateResponse {
     housing?: number;
     transportation?: number;
     flights?: number;
+    diet?: number;
   };
   unit: 'tCO2e/year';
 }

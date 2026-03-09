@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f5f5f5' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Outlet />

@@ -1,9 +1,12 @@
 import { calculateTransportation } from '../../src/services/calculator/transportation';
 
+const GASOLINE_KG_PER_GALLON = 8.887;
+const DIESEL_KG_PER_GALLON   = 10.18;
+const BUS_KG_PER_KM          = 0.089;
+const LITERS_PER_GALLON      = 3.78541;
+
 describe('calculateTransportation', () => {
   it('calculates gasoline car in km/liter and weekly km', () => {
-    // 200 km/week, 10 km/liter = 20 liters/week = 20*52 = 1040 L/year
-    // 1040 / 3.78541 = 274.7 gallons * 8.887 = 2441.6 kg = 2.44 tCO2e
     const result = calculateTransportation([{
       kind: 'own',
       vehicleType: 'car',
@@ -14,11 +17,11 @@ describe('calculateTransportation', () => {
       efficiency: 10,
       efficiencyUnit: 'km_per_liter',
     }]);
-    expect(result).toBeCloseTo(2.442, 1);
+    const annualGallons = (200 * 52 / 10) / LITERS_PER_GALLON;
+    expect(result).toBeCloseTo(annualGallons * GASOLINE_KG_PER_GALLON / 1000, 1);
   });
 
   it('calculates diesel car with MPG and annual miles', () => {
-    // 10000 miles/year, 30 MPG = 333.3 gallons * 10.18 = 3393 kg = 3.39 tCO2e
     const result = calculateTransportation([{
       kind: 'own',
       vehicleType: 'car',
@@ -29,12 +32,11 @@ describe('calculateTransportation', () => {
       efficiency: 30,
       efficiencyUnit: 'mpg',
     }]);
-    expect(result).toBeCloseTo(3.393, 1);
+    const annualGallons = 10000 / 30;
+    expect(result).toBeCloseTo(annualGallons * DIESEL_KG_PER_GALLON / 1000, 1);
   });
 
   it('calculates bus transport', () => {
-    // 100 km/week = 5200 km/year
-    // 5200 * 0.089 = 462.8 kg = 0.463 tCO2e
     const result = calculateTransportation([{
       kind: 'public',
       transportType: 'bus',
@@ -42,7 +44,7 @@ describe('calculateTransportation', () => {
       distancePeriod: 'week',
       distanceUnit: 'km',
     }]);
-    expect(result).toBeCloseTo(0.463, 2);
+    expect(result).toBeCloseTo(100 * 52 * BUS_KG_PER_KM / 1000, 2);
   });
 
   it('sums multiple transport modes', () => {

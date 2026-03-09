@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Airport } from '../types';
+import type { Airport } from '../types';
 
 let airportMap: Map<string, Airport> = new Map();
 let airportList: Airport[] = [];

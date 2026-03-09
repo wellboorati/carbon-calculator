@@ -1,4 +1,5 @@
-import { TransportationInput } from '../../types';
+import type { TransportationInput } from '../../types';
+import { KM_PER_MILE } from '../../constants/units';
 
 // EPA Emissions Factors for Greenhouse Gas Inventories
 const VEHICLE_FACTORS: Record<string, number> = {
@@ -14,7 +15,6 @@ const PUBLIC_FACTORS: Record<string, number> = {
 };
 
 const LITERS_PER_GALLON = 3.78541;
-const KM_PER_MILE = 1.60934;
 
 function toAnnualKm(distance: number, period: 'week' | 'month' | 'year', unit: 'km' | 'miles'): number {
   const inKm = unit === 'miles' ? distance * KM_PER_MILE : distance;

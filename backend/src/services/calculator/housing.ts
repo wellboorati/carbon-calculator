@@ -1,4 +1,4 @@
-import { HousingInput } from '../../types';
+import type { HousingInput } from '../../types';
 
 // EPA Emissions Factors for Greenhouse Gas Inventories
 const FACTORS = {
@@ -10,7 +10,7 @@ const FACTORS = {
 
 const M3_TO_THERMS = 0.353147; // 1 m³ natural gas = 0.353147 therms
 
-export function calculateHousing(input: HousingInput): number {
+function calculateSingle(input: HousingInput): number {
   const annualConsumption = input.consumption * 12;
   let kgCO2e = 0;
 
@@ -34,4 +34,8 @@ export function calculateHousing(input: HousingInput): number {
   }
 
   return kgCO2e / input.people / 1000;
+}
+
+export function calculateHousing(inputs: HousingInput[]): number {
+  return inputs.reduce((sum, input) => sum + calculateSingle(input), 0);
 }

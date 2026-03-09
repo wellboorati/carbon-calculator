@@ -1,12 +1,12 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { calculate } from '../services/calculator';
-import { CalculateRequest } from '../types';
+import type { CalculateRequest } from '../types';
 
 export function handleCalculate(req: Request, res: Response): void {
   const body = req.body as Partial<CalculateRequest>;
 
-  if (body.housing === undefined && body.transportation === undefined && body.flights === undefined) {
-    res.status(400).json({ error: 'Request body must include at least one of: housing, transportation, flights' });
+  if (body.housing === undefined && body.transportation === undefined && body.flights === undefined && body.diet === undefined) {
+    res.status(400).json({ error: 'Request body must include at least one of: housing, transportation, flights, diet' });
     return;
   }
 
@@ -14,6 +14,7 @@ export function handleCalculate(req: Request, res: Response): void {
     housing: body.housing ?? null,
     transportation: body.transportation ?? null,
     flights: body.flights ?? null,
+    diet: body.diet ?? null,
   };
 
   const result = calculate(input);

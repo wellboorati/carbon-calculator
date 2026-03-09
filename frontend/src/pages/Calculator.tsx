@@ -44,7 +44,7 @@ export default function Calculator() {
 
   function handleNext() {
     setError(null);
-    if (activeStep === 0) setHousing(housingDraft.some((e) => e.consumption > 0) ? housingDraft : null);
+    if (activeStep === 0) { const filled = housingDraft.filter((e) => e.consumption > 0); setHousing(filled.length > 0 ? filled : null); }
     if (activeStep === 1) setTransportation(transportDraft.length > 0 ? transportDraft : null);
     if (activeStep === 2) setFlights(flightsDraft.length > 0 ? flightsDraft : null);
     if (activeStep < STEPS.length - 1) {

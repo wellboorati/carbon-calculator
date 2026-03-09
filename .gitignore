@@ -21,6 +21,7 @@ pnpm-debug.log*
 # Claude Code
 .claude/
 CLAUDE.md
+docs/plans/
 
 # OS files
 .DS_Store

@@ -36,7 +36,6 @@ export default function Calculator() {
     clearDraft,
   } = useDraft();
 
-  // committed values (set when the user clicks Next/Skip on each step)
   const [housing, setHousing] = useState<HousingInput[] | null>(null);
   const [transportation, setTransportation] = useState<TransportationInput[] | null>(null);
   const [flights, setFlights] = useState<FlightInput[] | null>(null);
@@ -61,7 +60,6 @@ export default function Calculator() {
     if (activeStep === 1) setTransportation(null);
     if (activeStep === 2) setFlights(null);
     if (isLastStep) {
-      // diet is last step — skip means diet = null
       const finalDiet: DietInput | null = null;
       if (skippedHousing === null && skippedTransport === null && skippedFlights === null) {
         setError('Please fill in at least one section — housing, transportation, or flights — before calculating.');
@@ -85,8 +83,6 @@ export default function Calculator() {
   }
 
   async function handleSubmit() {
-    // Always include diet when Calculate is clicked — the plant-based baseline
-    // (0.5 tCO₂e/year) is always meaningful even with all sliders at zero.
     const finalDiet: DietInput = dietDraft;
     setLoading(true);
     setError(null);

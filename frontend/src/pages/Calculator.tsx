@@ -84,6 +84,11 @@ export default function Calculator() {
 
   async function handleSubmit() {
     const finalDiet: DietInput = dietDraft;
+    const dietIsEmpty = Object.values(finalDiet).every((v) => v === 0);
+    if (housing === null && transportation === null && flights === null && dietIsEmpty) {
+      setError('Please fill in at least one section before calculating.');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
